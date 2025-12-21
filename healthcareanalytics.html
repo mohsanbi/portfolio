@@ -417,43 +417,7 @@ padding: 30px 0 30px;
   }
 </script>
 
-<script>
-  let autoScrollActive = true;
-  let hasInteracted = false;
-
-  // Stop auto-scroll immediately on user interaction
-  const stopAutoScroll = () => {
-    hasInteracted = true;
-    autoScrollActive = false;
-  };
-
-  ["wheel", "touchstart", "keydown", "mousedown"].forEach(event => {
-    window.addEventListener(event, stopAutoScroll, { once: true });
-  });
-
-  // Auto scroll preview
-  const scrollStep = () => {
-    if (!autoScrollActive || hasInteracted) return;
-
-    const scrollTop = window.scrollY + window.innerHeight;
-    const scrollHeight = document.documentElement.scrollHeight;
-
-    if (scrollTop < scrollHeight) {
-      window.scrollBy({
-        top: 8,          // 🔥 fast preview speed
-        behavior: "smooth"
-      });
-      requestAnimationFrame(scrollStep);
-    }
-  };
-
-  // Delay so header + video are visible first
-  setTimeout(() => {
-    requestAnimationFrame(scrollStep);
-  }, 1800);
-</script>
-
-
 </body>
 </html>
+
 
