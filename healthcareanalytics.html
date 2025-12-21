@@ -376,11 +376,13 @@ padding: 30px 0 30px;
     mobileMenu.classList.toggle("hidden");
   });
 </script>
-<script>
+
+
+  <script>
   let autoScrollActive = true;
   let hasInteracted = false;
 
-  // Stop auto-scroll immediately on user interaction
+  // Stop auto-scroll immediately on any user interaction
   const stopAutoScroll = () => {
     hasInteracted = true;
     autoScrollActive = false;
@@ -390,7 +392,7 @@ padding: 30px 0 30px;
     window.addEventListener(event, stopAutoScroll, { once: true });
   });
 
-  // Auto scroll preview
+  // Scroll function
   const scrollStep = () => {
     if (!autoScrollActive || hasInteracted) return;
 
@@ -399,21 +401,25 @@ padding: 30px 0 30px;
 
     if (scrollTop < scrollHeight) {
       window.scrollBy({
-        top: 8,          // 🔥 fast preview speed
+        top: 8,         // Adjust speed (6–12)
         behavior: "smooth"
       });
       requestAnimationFrame(scrollStep);
     }
   };
 
-  // Delay so header + video are visible first
-  setTimeout(() => {
-    requestAnimationFrame(scrollStep);
-  }, 500);
+  // Start scrolling after page fully loads
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      requestAnimationFrame(scrollStep);
+    }, 800); // delay so video/header are visible
+  });
 </script>
 
+  
 </body>
 </html>
+
 
 
 
