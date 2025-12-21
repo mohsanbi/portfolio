@@ -694,11 +694,11 @@ FROM staging_reviews;
     mobileMenu.classList.toggle("hidden");
   });
 </script>
-
 <script>
   let autoScrollActive = true;
   let hasInteracted = false;
 
+  // Stop auto-scroll immediately on user interaction
   const stopAutoScroll = () => {
     hasInteracted = true;
     autoScrollActive = false;
@@ -708,32 +708,28 @@ FROM staging_reviews;
     window.addEventListener(event, stopAutoScroll, { once: true });
   });
 
-  // Run auto preview only once per session
-  if (!sessionStorage.getItem("previewScrolled")) {
-    sessionStorage.setItem("previewScrolled", "true");
+  // Auto scroll preview
+  const scrollStep = () => {
+    if (!autoScrollActive || hasInteracted) return;
 
-    const scrollStep = () => {
-      if (!autoScrollActive || hasInteracted) return;
+    const scrollTop = window.scrollY + window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
 
-      const scrollTop = window.scrollY + window.innerHeight;
-      const scrollHeight = document.documentElement.scrollHeight;
-
-      if (scrollTop < scrollHeight) {
-        window.scrollBy({
-          top: 8, // 🔥 fast preview
-          behavior: "smooth"
-        });
-        requestAnimationFrame(scrollStep);
-      }
-    };
-
-    // Delay so header + title are seen first
-    setTimeout(() => {
+    if (scrollTop < scrollHeight) {
+      window.scrollBy({
+        top: 8,          // 🔥 fast preview speed
+        behavior: "smooth"
+      });
       requestAnimationFrame(scrollStep);
-    }, 1800);
-  }
-</script>
+    }
+  };
 
+  // Delay so header + video are visible first
+  setTimeout(() => {
+    requestAnimationFrame(scrollStep);
+  }, 1800);
+</script>
 
 </body>
 </html>
+
