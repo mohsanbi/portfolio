@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital Performance & Forecasting | Power BI Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+<!-- Prism.js SQL Syntax Highlighting -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    .container-custom {
+      width: 95%;
+      max-width: 1400px;
+      margin: auto;
+      padding: 30px 0 30px;
+    }
+
+    .dashboard {
+      width: 100%;
+      height: calc(100vh - 130px);
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .section-title {
+    text-align: center;
+    font-size: 24px;   /* optional */
+    font-weight: bold; /* optional */
+    margin-bottom: 20px; /* optional spacing */
+padding: 30px 0 30px;
+  }
+
+    .code-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .code-block {
+      flex: 1;
+      min-width: 320px;
+   background: #020617;
+ 
+      color: #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      height: 460px;
+      overflow-y: auto;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    .code-block h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #38bdf8;
+    }
+
+    pre {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .code-block::-webkit-scrollbar {
+      width: 8px;
+    }
+.code-block pre {
+  background: transparent;
+}
+
+    .code-block::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+
+    .code-block::-webkit-scrollbar-track {
+      background: #020617;
+    }
+.image-row {
+  display: flex;
+  justify-content: center; /* center the images as a group */
+  gap: 20px;               /* space between images */
+  margin-top: 30px;
+      flex-wrap: wrap;
+}
+
+.image-row img {
+  max-width: 100%; /* prevents overflow on small screens */
+  height: auto;
+}
+
+
+.project-summary {
+  margin-top: 70px;
+  padding: 60px 30px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.project-summary h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+
+.project-summary h3 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+.project-summary p {
+  max-width: 900px;
+  margin: auto;
+  font-size: 16px;
+  line-height: 1.7;
+  text-align: center;
+  color: #374151;
+}
+
+.skill-badges {
+  max-width: 1000px;
+  margin: 20px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.skill-badges span {
+  padding: 8px 14px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.workflow {
+  max-width: 1000px;
+  margin: auto;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: center;
+  color: #374151;
+}
+
+.impact-list {
+  max-width: 800px;
+  margin: auto;
+  padding-left: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.impact-list li {
+  margin: 10px 0;
+  font-size: 16px;
+}
+  </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header id="main-header" class="sticky top-0 z-50 shadow-md bg-gray-900">
+  <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+    
+    <div class="text-2xl font-black tracking-wider text-white">
+      Mohsan<span class="text-orange-400">BI</span>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center space-x-8">
+      <a class="font-bold text-gray-300 hover:text-orange-400" href="https://mohsanbi.github.io/Portfolio/#about">About</a>
+      <a class="font-bold text-gray-300 hover:text-orange-400" href="https://mohsanbi.github.io/Portfolio/#projects">Projects</a>
+      <a class="font-bold text-gray-300 hover:text-orange-400" href="https://mohsanbi.github.io/Portfolio/#contact">Contact</a>
+      <a class="font-bold text-gray-300 hover:text-orange-400" href="https://mohsanbi.github.io/Portfolio/#faqs">FAQs</a>
+
+      <a class="block text-lg font-bold text-transparent bg-clip-text
+         bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-200
+         hover:from-yellow-400 hover:via-yellow-200 hover:to-yellow-500"
+         href="https://mohsanbi.github.io/Portfolio/#awards">
+        Awards
+      </a>
+
+      <a class="px-5 py-2 border-2 border-orange-400 text-orange-400 rounded-full
+         hover:bg-orange-400 hover:text-white transition-all"
+         href="https://drive.google.com/file/d/1Ku26nJ-bovann6yBeqkMlceESG3ZOXTr/view?usp=sharing"
+         target="_blank">
+        CV
+      </a>
+    </div>
+
+    <!-- Contact CTA -->
+    <a class="hidden md:block px-5 py-2 bg-orange-500 text-white rounded-full
+       hover:bg-orange-600 transform hover:scale-105 transition-all shadow-md"
+       href="/#contact">
+      Contact
+    </a>
+
+    <!-- Mobile Button -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-white text-2xl">
+        ☰
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden bg-gray-800 text-center py-4 md:hidden">
+    <a class="block py-2 text-white hover:bg-gray-700" href="https://mohsanbi.github.io/Portfolio/#about">About</a>
+    <a class="block py-2 text-white hover:bg-gray-700" href="https://mohsanbi.github.io/Portfolio/#projects">Projects</a>
+    <a class="block py-2 text-white hover:bg-gray-700" href="https://mohsanbi.github.io/Portfolio/#contact">Contact</a>
+    <a class="block py-2 text-white hover:bg-gray-700" href="https://mohsanbi.github.io/Portfolio/#faqs">FAQs</a>
+    <a class="block py-2 text-white hover:bg-gray-700" href="https://mohsanbi.github.io/Portfolio/#awards">Awards</a>
+    <a class="block mt-4 mx-4 px-6 py-2 font-bold border border-white text-white rounded-md hover:bg-orange-600"
+       href="https://drive.google.com/file/d/1Ku26nJ-bovann6yBeqkMlceESG3ZOXTr/view?usp=sharing"
+       target="_blank">
+      CV
+    </a>
+  </div>
+</header>
+
+<!-- ================= CONTENT ================= -->
+<div class="container-custom">
+<div class="section-title">Hospital Performance & Forecasting</div>
+
+  <!-- Power BI Dashboard -->
+  <iframe
+    class="dashboard"
+    title="E Commerce Analytics & Forecasting"
+    src="https://app.powerbi.com/view?r=eyJrIjoiZThkYWU2MTEtZDViMS00MzUwLWI4OTQtZjllOWQzNjU3YzNkIiwidCI6ImNlY2ZmMzY1LWU1MDktNGE4Mi05NzAxLTZmMDI5ZGM0ZTdkOCIsImMiOjl9"
+    allowfullscreen="true">
+  </iframe>
+</div>
+
+<div class="container-custom">
+<div class="section-title">Power BI Screenshots</div>
+<div class="image-row">
+  <img src="https://res.cloudinary.com/dnotuemwj/image/upload/v1766313200/Hospital_Data_model_ely009.png" loading="lazy" decoding="async" alt="Image 1">
+</div>
+<div class="section-title">BigQuery Screenshots</div>
+<div class="image-row">
+  <img src="https://res.cloudinary.com/dnotuemwj/image/upload/v1766314879/BigQuery_stw7lg.png" loading="lazy" decoding="async" alt="Image 1">
+</div>
+
+
+<!-- ================= PROJECT HIGHLIGHTS ================= -->
+<section class="project-summary"> 
+
+  <h2>Project Highlights</h2>
+
+  <h3>Tools & Skills</h3>
+  <div class="skill-badges">
+    <span>BigQuery</span>
+    <span>SQL</span>
+    <span>dbt</span>
+    <span>Power BI</span>
+    <span>DAX</span>
+    <span>Data Modeling</span>
+    <span>Star Schema</span>
+    <span>Bridge Tables</span>
+    <span>Healthcare Analytics</span>
+    <span>Dashboard Design</span>
+  </div>
+
+  <h3>Project Purpose</h3>
+  <p>
+    To design an end-to-end healthcare analytics solution that transforms raw
+    clinical and financial CSV data into decision-ready insights for hospital
+    leadership, operations, and finance teams.
+  </p>
+
+  <h3>Project Workflow</h3>
+  <p class="workflow">
+    CSV healthcare data ingested into BigQuery → dbt staging models for data
+    cleaning and standardization → Analytics marts with fact, dimension, and
+    bridge tables (healthcare star schema) → Power BI semantic modeling and DAX
+    measures → Executive-level dashboards for operational, clinical, and
+    financial performance monitoring.
+  </p>
+
+  <h3>Business Impact</h3>
+  <ul class="impact-list">
+    <li>Provided executive visibility into patient volume, encounter mix, and length of stay</li>
+    <li>Enabled financial analysis of billed vs collected revenue and payer performance</li>
+    <li>Identified high-complexity encounters using diagnosis and procedure analytics</li>
+    <li>Supported operational decision-making through utilization and efficiency KPIs</li>
+  </ul>
+
+  <h3>Source of Data</h3>
+  <p>
+    Synthetic healthcare encounter, diagnosis, procedure, and claims data
+    modeled to reflect real-world hospital workflows.
+  </p>
+
+</section>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+  const menuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuButton.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>
+
+</body>
+</html>
