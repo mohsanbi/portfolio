@@ -421,7 +421,7 @@ padding: 30px 0 30px;
   let autoScrollActive = true;
   let hasInteracted = false;
 
-  // Stop auto-scroll on any user interaction
+  // Stop auto-scroll immediately on user interaction
   const stopAutoScroll = () => {
     hasInteracted = true;
     autoScrollActive = false;
@@ -431,32 +431,29 @@ padding: 30px 0 30px;
     window.addEventListener(event, stopAutoScroll, { once: true });
   });
 
-  // Run auto-preview only once per session
-  if (!sessionStorage.getItem("previewScrolled")) {
-    sessionStorage.setItem("previewScrolled", "true");
+  // Auto scroll preview
+  const scrollStep = () => {
+    if (!autoScrollActive || hasInteracted) return;
 
-    const scrollStep = () => {
-      if (!autoScrollActive || hasInteracted) return;
+    const scrollTop = window.scrollY + window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
 
-      const scrollTop = window.scrollY + window.innerHeight;
-      const scrollHeight = document.documentElement.scrollHeight;
-
-      if (scrollTop < scrollHeight) {
-        window.scrollBy({
-          top: 8,          // 🔥 increase this for even faster (10–12 max recommended)
-          behavior: "smooth"
-        });
-        requestAnimationFrame(scrollStep);
-      }
-    };
-
-    // Short delay so video + header are seen
-    setTimeout(() => {
+    if (scrollTop < scrollHeight) {
+      window.scrollBy({
+        top: 8,          // 🔥 fast preview speed
+        behavior: "smooth"
+      });
       requestAnimationFrame(scrollStep);
-    }, 1800);
-  }
+    }
+  };
+
+  // Delay so header + video are visible first
+  setTimeout(() => {
+    requestAnimationFrame(scrollStep);
+  }, 1800);
 </script>
 
 
 </body>
 </html>
+
